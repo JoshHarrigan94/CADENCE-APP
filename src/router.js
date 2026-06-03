@@ -13,7 +13,10 @@ import {
   renderWorkoutScreen,
   bindWorkoutScreen,
 } from "./screens/workoutScreen.js";
-import { renderSummaryScreen } from "./screens/summaryScreen.js";
+import {
+  renderSummaryScreen,
+  bindSummaryScreen,
+} from "./screens/summaryScreen.js";
 import { renderHistoryScreen } from "./screens/historyScreen.js";
 
 const routes = {
@@ -55,6 +58,9 @@ export function renderApp() {
   }
     if (state.currentScreen === "plan") {
     bindPlanScreen(state);
+  }
+    if (state.currentScreen === "summary") {
+    bindSummaryScreen(state);
   }
 }
 

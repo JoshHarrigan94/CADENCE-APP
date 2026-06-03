@@ -1,5 +1,9 @@
+import { analyseSession } from "../engine/progressionEngine.js";
+import { saveState } from "../data/storage.js";
+
 export function renderSummaryScreen(state) {
   const session = state.lastSession || state.activeSession;
+  const analysis = analyseSession(session);
 
   const completion =
     session.targetReps > 0
@@ -13,17 +17,11 @@ export function renderSummaryScreen(state) {
         <p class="eyebrow">Summary</p>
         <h1>Session logged.</h1>
         <p>
-          Cadence has saved the work. Review the signal, then return
-          to training.
+          Cadence has read the signal and prepared your next prescription.
         </p>
       </section>
 
       <section class="status-grid">
-
-        <article class="status-card">
-          <span>Exercise</span>
-          <strong>${session.exercise}</strong>
-        </article>
 
         <article class="status-card">
           <span>Completion</span>
@@ -31,25 +29,63 @@ export function renderSummaryScreen(state) {
         </article>
 
         <article class="status-card">
-          <span>Reps</span>
-          <strong>${session.completedReps}/${session.targetReps}</strong>
+          <span>Signal</span>
+          <strong>${analysis.rating}</strong>
         </article>
 
         <article class="status-card">
-          <span>Tempo</span>
-          <strong>${session.tempo.join("-")}</strong>
+          <span>Decision</span>
+          <strong>${analysis.decision}</strong>
+        </article>
+
+        <article class="status-card">
+          <span>Next Target</span>
+          <strong>${analysis.nextSession.targetReps} reps</strong>
         </article>
 
       </section>
 
-      <button class="primary-button" data-route="workout">
-        Train Again
+      <section class="phase-panel" data-rating="${analysis.rating.toLowerCase()}">
+        <p class="eyebrow">Coach</p>
+        <h2>${analysis.decision}</h2>
+        <p>${analysis.message}</p>
+      </section>
+
+      <button class="primary-button" id="apply-progression-button">
+        Apply Next Session
       </button>
 
       <button class="secondary-button" data-route="history">
         View History
       </button>
 
+      <button class="secondary-button" data-route="workout">
+        Train Again Without Changes
+      </button>
+
     </main>
   `;
+}
+
+export function bindSummaryScreen(state) {
+  const button = document.querySelector("#apply-progression-button");
+
+  button?.addEventListener("click", () => {
+    const session = state.lastSession || state.activeSession;
+    const analysis = analyseSession(session);
+
+    state.activeSession = {
+      ...analysis.nextSession,
+      id: undefined,
+      date: undefined,
+    };
+
+    saveState(state);
+
+    window.dispatchEvent(
+      new CustomEvent("cadence:navigate", {
+        detail: "workout",
+      })
+    );
+  });
 }

@@ -550,3 +550,15 @@ p {
   letter-spacing: 0.08em;
   color: var(--ink-muted);
 }
+
+.phase-panel[data-rating="green"] {
+  border-color: var(--success);
+}
+
+.phase-panel[data-rating="amber"] {
+  border-color: rgba(126, 93, 34, 0.72);
+}
+
+.phase-panel[data-rating="red"] {
+  border-color: var(--danger);
+}

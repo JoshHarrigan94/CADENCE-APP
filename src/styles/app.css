@@ -1,0 +1,211 @@
+.app-shell {
+  width: min(100%, 520px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: var(--space-md);
+}
+
+.loading {
+  color: var(--color-muted);
+}
+
+.screen {
+  min-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-bottom: 5rem;
+}
+
+.hero-panel,
+.page-header,
+.placeholder-panel,
+.phase-panel,
+.plan-card,
+.status-card {
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-panel {
+  padding: var(--space-2xl) var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.page-header,
+.placeholder-panel,
+.phase-panel,
+.plan-card {
+  padding: var(--space-lg);
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 11ch;
+  margin-bottom: var(--space-md);
+  font-size: clamp(2.7rem, 11vw, 4.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+}
+
+h2 {
+  margin-bottom: var(--space-sm);
+  font-size: 1.2rem;
+  letter-spacing: -0.035em;
+}
+
+p {
+  color: var(--color-ink-soft);
+  line-height: 1.55;
+}
+
+.lede {
+  max-width: 28rem;
+  font-size: 1.04rem;
+}
+
+.hero-actions,
+.session-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+}
+
+.primary-button,
+.secondary-button,
+.bottom-nav button {
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 0.9rem 1.1rem;
+}
+
+.primary-button {
+  color: var(--color-paper);
+  background: var(--color-ink);
+}
+
+.secondary-button {
+  color: var(--color-ink);
+  background: transparent;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+.status-card {
+  padding: var(--space-md);
+}
+
+.status-card span,
+.rep-counter span,
+.dial-label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-muted);
+}
+
+.status-card strong {
+  font-size: 1.2rem;
+}
+
+.plan-list {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.workout-header {
+  margin-top: var(--space-lg);
+}
+
+.tempo-instrument {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.tempo-dial {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px solid var(--color-ink);
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgba(17, 17, 17, 0.04) 0,
+      rgba(17, 17, 17, 0.04) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+}
+
+.tempo-dial strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(3rem, 18vw, 6rem);
+  letter-spacing: -0.08em;
+}
+
+.rep-counter {
+  padding: var(--space-lg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-panel);
+}
+
+.rep-counter strong {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-md);
+  transform: translateX(-50%);
+  width: min(calc(100% - 2rem), 480px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-full);
+  background: rgba(243, 240, 232, 0.86);
+  backdrop-filter: blur(16px);
+}
+
+.bottom-nav button {
+  padding: 0.75rem 0.8rem;
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-ink);
+}

@@ -38,7 +38,9 @@ export function renderApp() {
 
   app.innerHTML = screenRenderer(state);
   bindNavigation();
-
+    window.addEventListener("cadence:navigate", (event) => {
+    navigate(event.detail);
+  }, { once: true });
   if (state.currentScreen === "workout") {
     bindWorkoutScreen(state);
   }

@@ -308,3 +308,16 @@ function formatStatus(status) {
   if (status === "complete") return "Complete";
   return status;
 }
+
+export function cleanupWorkoutScreen() {
+  if (tempoEngine) {
+    tempoEngine.pause();
+  }
+
+  if (unsubscribe) {
+    unsubscribe();
+    unsubscribe = null;
+  }
+
+  tempoEngine = null;
+}

@@ -1,5 +1,11 @@
 import { createTempoEngine } from "../engine/tempoEngine.js";
-
+import {
+  unlockAudio,
+  playStartCue,
+  playPauseCue,
+  playCompleteCue,
+  playPhaseTick,
+} from "../engine/audioEngine.js";
 let tempoEngine = null;
 let unsubscribe = null;
 

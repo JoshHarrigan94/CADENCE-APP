@@ -474,3 +474,35 @@ p {
   transform: translateY(2px) scale(0.985);
   box-shadow: none;
 }
+
+.history-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  box-shadow: var(--shadow-soft);
+}
+
+.history-card h2 {
+  margin-bottom: 0.35rem;
+}
+
+.history-card p {
+  margin-bottom: 0;
+}
+
+.history-card strong {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  letter-spacing: -0.08em;
+}

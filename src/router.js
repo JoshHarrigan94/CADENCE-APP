@@ -1,7 +1,10 @@
 import { state } from "./state.js";
 
 import { renderHomeScreen } from "./screens/homeScreen.js";
-import { renderAssessmentScreen } from "./screens/assessmentScreen.js";
+import {
+  renderAssessmentScreen,
+  bindAssessmentScreen,
+} from "./screens/assessmentScreen.js";
 import { renderPlanScreen } from "./screens/planScreen.js";
 import {
   renderWorkoutScreen,
@@ -43,6 +46,9 @@ export function renderApp() {
   }, { once: true });
   if (state.currentScreen === "workout") {
     bindWorkoutScreen(state);
+  }
+    if (state.currentScreen === "assessment") {
+    bindAssessmentScreen(state);
   }
 }
 

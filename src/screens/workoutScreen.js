@@ -17,24 +17,31 @@ export function renderWorkoutScreen(state) {
       <section class="tempo-instrument">
 
         <div class="tempo-dial" id="tempo-dial">
-          <div>
-            <span class="dial-label">Tempo</span>
+          <div class="dial-needle" id="dial-needle"></div>
+
+          <div class="dial-core">
+            <span class="dial-label" id="phase-mini-label">Tempo</span>
             <strong id="tempo-count">${session.tempo.join("-")}</strong>
+            <small id="rep-mini-label">Rep 1</small>
           </div>
         </div>
 
         <div class="rep-counter">
-          <span>Reps</span>
+          <span>Reps completed</span>
           <strong id="rep-count">0/${session.targetReps}</strong>
+
+          <div class="rep-progress-track">
+            <div class="rep-progress-fill" id="rep-progress-fill"></div>
+          </div>
         </div>
 
       </section>
 
-      <section class="phase-panel">
+      <section class="phase-panel" id="phase-panel">
         <p class="eyebrow" id="phase-status">Ready</p>
-        <h2 id="phase-label">Ready</h2>
+        <h2 id="phase-label">Set your position.</h2>
         <p id="phase-cue">
-          Start when your hands are set and your body is braced.
+          Hands planted. Body braced. One clean line.
         </p>
       </section>
 
@@ -48,7 +55,7 @@ export function renderWorkoutScreen(state) {
         </button>
 
         <button class="secondary-button" data-route="summary">
-          End Session
+          End
         </button>
       </section>
 
@@ -93,6 +100,11 @@ export function bindWorkoutScreen(state) {
 
     if (snapshot.status === "paused") {
       tempoEngine.resume();
+      return;
+    }
+
+    if (snapshot.status === "complete") {
+      tempoEngine.reset();
     }
   });
 
@@ -113,15 +125,32 @@ function updateWorkoutUI(snapshot, state) {
   const phaseCue = document.querySelector("#phase-cue");
   const startButton = document.querySelector("#start-session-button");
   const tempoDial = document.querySelector("#tempo-dial");
+  const dialNeedle = document.querySelector("#dial-needle");
+  const phasePanel = document.querySelector("#phase-panel");
+  const repProgressFill = document.querySelector("#rep-progress-fill");
+  const phaseMiniLabel = document.querySelector("#phase-mini-label");
+  const repMiniLabel = document.querySelector("#rep-mini-label");
 
   state.activeSession.status = snapshot.status;
   state.activeSession.completedReps = snapshot.completedReps;
+
+  const repProgress =
+    snapshot.targetReps > 0
+      ? snapshot.completedReps / snapshot.targetReps
+      : 0;
+
+  const phaseDegrees = Math.max(
+    0,
+    Math.min(360, snapshot.progress * 360)
+  );
 
   if (tempoCount) {
     tempoCount.textContent =
       snapshot.status === "idle"
         ? snapshot.tempo.join("-")
-        : snapshot.phaseRemaining;
+        : snapshot.status === "complete"
+          ? "✓"
+          : snapshot.phaseRemaining;
   }
 
   if (repCount) {
@@ -130,21 +159,15 @@ function updateWorkoutUI(snapshot, state) {
   }
 
   if (phaseStatus) {
-    phaseStatus.textContent = snapshot.status;
+    phaseStatus.textContent = formatStatus(snapshot.status);
   }
 
   if (phaseLabel) {
-    phaseLabel.textContent =
-      snapshot.status === "complete"
-        ? "Complete"
-        : snapshot.phase.label;
+    phaseLabel.textContent = getPhaseLabel(snapshot);
   }
 
   if (phaseCue) {
-    phaseCue.textContent =
-      snapshot.status === "complete"
-        ? "Session complete. Log the work."
-        : snapshot.phase.cue;
+    phaseCue.textContent = getPhaseCue(snapshot);
   }
 
   if (startButton) {
@@ -152,16 +175,82 @@ function updateWorkoutUI(snapshot, state) {
   }
 
   if (tempoDial) {
+    tempoDial.dataset.phase = snapshot.phase.id;
+    tempoDial.dataset.status = snapshot.status;
+
     tempoDial.style.setProperty(
       "--phase-progress",
-      `${snapshot.progress * 360}deg`
+      `${phaseDegrees}deg`
     );
   }
+
+  if (dialNeedle) {
+    dialNeedle.style.transform =
+      `translateX(-50%) rotate(${phaseDegrees}deg)`;
+  }
+
+  if (phasePanel) {
+    phasePanel.dataset.phase = snapshot.phase.id;
+    phasePanel.dataset.status = snapshot.status;
+  }
+
+  if (repProgressFill) {
+    repProgressFill.style.transform =
+      `scaleX(${repProgress})`;
+  }
+
+  if (phaseMiniLabel) {
+    phaseMiniLabel.textContent =
+      snapshot.status === "idle"
+        ? "Tempo"
+        : snapshot.status === "complete"
+          ? "Complete"
+          : snapshot.phase.label;
+  }
+
+  if (repMiniLabel) {
+    repMiniLabel.textContent =
+      snapshot.status === "complete"
+        ? "Session done"
+        : `Rep ${snapshot.currentRep}`;
+  }
+}
+
+function getPhaseLabel(snapshot) {
+  if (snapshot.status === "idle") return "Set your position.";
+  if (snapshot.status === "paused") return "Paused.";
+  if (snapshot.status === "complete") return "Session complete.";
+
+  return snapshot.phase.label;
+}
+
+function getPhaseCue(snapshot) {
+  if (snapshot.status === "idle") {
+    return "Hands planted. Body braced. One clean line.";
+  }
+
+  if (snapshot.status === "paused") {
+    return "Hold the session. Resume when ready.";
+  }
+
+  if (snapshot.status === "complete") {
+    return "Good work. Save the signal and review the session.";
+  }
+
+  return snapshot.phase.cue;
 }
 
 function getStartButtonLabel(status) {
   if (status === "running") return "Pause";
   if (status === "paused") return "Resume";
-  if (status === "complete") return "Done";
+  if (status === "complete") return "Reset";
   return "Start";
+}
+
+function formatStatus(status) {
+  if (status === "idle") return "Ready";
+  if (status === "running") return "Working";
+  if (status === "paused") return "Paused";
+  if (status === "complete") return "Complete";
+  return status;
 }

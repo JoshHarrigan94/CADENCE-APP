@@ -1,4 +1,4 @@
-.app-shell {
+..app-shell {
   width: min(100%, 520px);
   min-height: 100vh;
   margin: 0 auto;
@@ -331,4 +331,146 @@ p {
       transparent 1px,
       transparent 13px
     );
+}
+
+.dial-core {
+  position: relative;
+  z-index: 2;
+}
+
+.dial-core small {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+.dial-needle {
+  position: absolute;
+  z-index: 1;
+  top: 1.05rem;
+  left: 50%;
+  width: 2px;
+  height: calc(50% - 1.05rem);
+  background: var(--ink);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(0deg);
+  transition: transform 420ms var(--ease-out);
+}
+
+.dial-needle::after {
+  content: "";
+  position: absolute;
+  top: -0.22rem;
+  left: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translateX(-50%);
+}
+
+.tempo-dial[data-status="running"] {
+  animation: instrumentPulse 1000ms ease-in-out infinite;
+}
+
+.tempo-dial[data-status="paused"] {
+  opacity: 0.72;
+}
+
+.tempo-dial[data-status="complete"] {
+  animation: completionPop 520ms var(--ease-out) both;
+}
+
+@keyframes instrumentPulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 12px rgba(16, 16, 14, 0.035),
+      var(--shadow-soft);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 15px rgba(16, 16, 14, 0.055),
+      0 28px 80px rgba(16, 16, 14, 0.14);
+  }
+}
+
+@keyframes completionPop {
+  0% {
+    transform: scale(0.96);
+  }
+
+  70% {
+    transform: scale(1.035);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.rep-progress-track {
+  height: 0.5rem;
+  margin-top: 1rem;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: rgba(16, 16, 14, 0.1);
+}
+
+.rep-progress-fill {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms var(--ease-out);
+}
+
+.phase-panel {
+  transition:
+    transform 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    background 260ms var(--ease-out);
+}
+
+.phase-panel[data-status="running"] {
+  transform: translateY(-1px);
+}
+
+.phase-panel[data-phase="eccentric"] {
+  border-color: rgba(16, 16, 14, 0.42);
+}
+
+.phase-panel[data-phase="bottom"] {
+  border-style: dashed;
+}
+
+.phase-panel[data-phase="concentric"] {
+  background: rgba(247, 242, 232, 0.78);
+}
+
+.phase-panel[data-phase="top"] {
+  border-color: rgba(16, 16, 14, 0.24);
+}
+
+.phase-panel[data-status="complete"] {
+  border-color: var(--success);
+}
+
+.primary-button,
+.secondary-button {
+  user-select: none;
+}
+
+.primary-button:active,
+.secondary-button:active {
+  transform: translateY(2px) scale(0.985);
+  box-shadow: none;
 }

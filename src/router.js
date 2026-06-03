@@ -42,6 +42,10 @@ export function navigate(screen) {
     return;
   }
 
+  if (state.currentScreen === "workout" && screen !== "workout") {
+    cleanupWorkoutScreen();
+  }
+
   state.currentScreen = screen;
   renderApp();
 }

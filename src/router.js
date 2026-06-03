@@ -1,22 +1,27 @@
 import { state } from "./state.js";
 
 import { renderHomeScreen } from "./screens/homeScreen.js";
+
 import {
   renderAssessmentScreen,
   bindAssessmentScreen,
 } from "./screens/assessmentScreen.js";
+
 import {
   renderPlanScreen,
   bindPlanScreen,
 } from "./screens/planScreen.js";
+
 import {
   renderWorkoutScreen,
   bindWorkoutScreen,
 } from "./screens/workoutScreen.js";
+
 import {
   renderSummaryScreen,
   bindSummaryScreen,
 } from "./screens/summaryScreen.js";
+
 import { renderHistoryScreen } from "./screens/historyScreen.js";
 
 const routes = {
@@ -27,6 +32,8 @@ const routes = {
   summary: renderSummaryScreen,
   history: renderHistoryScreen,
 };
+
+let customNavigationBound = false;
 
 export function navigate(screen) {
   if (!routes[screen]) {
@@ -43,32 +50,48 @@ export function renderApp() {
 
   if (!app) return;
 
+  bindCustomNavigation();
+
   const screenRenderer = routes[state.currentScreen];
 
   app.innerHTML = screenRenderer(state);
+
   bindNavigation();
-    window.addEventListener("cadence:navigate", (event) => {
-    navigate(event.detail);
-  }, { once: true });
-  if (state.currentScreen === "workout") {
-    bindWorkoutScreen(state);
-  }
-    if (state.currentScreen === "assessment") {
-    bindAssessmentScreen(state);
-  }
-    if (state.currentScreen === "plan") {
-    bindPlanScreen(state);
-  }
-    if (state.currentScreen === "summary") {
-    bindSummaryScreen(state);
-  }
+  bindCurrentScreen();
 }
 
 function bindNavigation() {
   document.querySelectorAll("[data-route]").forEach((button) => {
     button.addEventListener("click", () => {
-      const route = button.dataset.route;
-      navigate(route);
+      navigate(button.dataset.route);
     });
   });
+}
+
+function bindCustomNavigation() {
+  if (customNavigationBound) return;
+
+  window.addEventListener("cadence:navigate", (event) => {
+    navigate(event.detail);
+  });
+
+  customNavigationBound = true;
+}
+
+function bindCurrentScreen() {
+  if (state.currentScreen === "workout") {
+    bindWorkoutScreen(state);
+  }
+
+  if (state.currentScreen === "assessment") {
+    bindAssessmentScreen(state);
+  }
+
+  if (state.currentScreen === "plan") {
+    bindPlanScreen(state);
+  }
+
+  if (state.currentScreen === "summary") {
+    bindSummaryScreen(state);
+  }
 }

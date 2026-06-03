@@ -2,7 +2,7 @@ export function createTempoEngine(config = {}) {
   const tempo = config.tempo || [3, 1, 1, 1];
   const targetReps = config.targetReps || 8;
 
-    const phases = [
+  const phases = [
     {
       id: "eccentric",
       label: "Lower",
@@ -31,8 +31,8 @@ export function createTempoEngine(config = {}) {
 
   let status = "idle";
   let currentRep = 1;
-  let currentPhaseIndex = 0;
-  let phaseRemaining = phases[0].seconds;
+  let currentPhaseIndex = getNextValidPhaseIndex(0);
+  let phaseRemaining = phases[currentPhaseIndex].seconds;
   let intervalId = null;
 
   const listeners = new Set();
@@ -94,8 +94,8 @@ export function createTempoEngine(config = {}) {
 
     status = "idle";
     currentRep = 1;
-    currentPhaseIndex = 0;
-    phaseRemaining = phases[0].seconds;
+    currentPhaseIndex = getNextValidPhaseIndex(0);
+    phaseRemaining = phases[currentPhaseIndex].seconds;
     intervalId = null;
 
     emit();
@@ -123,11 +123,10 @@ export function createTempoEngine(config = {}) {
   }
 
   function advancePhase() {
-    const isLastPhase =
-      currentPhaseIndex === phases.length - 1;
+    const nextPhaseIndex = getNextValidPhaseIndex(currentPhaseIndex + 1);
 
-    if (!isLastPhase) {
-      currentPhaseIndex += 1;
+    if (nextPhaseIndex !== null) {
+      currentPhaseIndex = nextPhaseIndex;
       phaseRemaining = phases[currentPhaseIndex].seconds;
       return;
     }
@@ -140,8 +139,18 @@ export function createTempoEngine(config = {}) {
     }
 
     currentRep += 1;
-    currentPhaseIndex = 0;
-    phaseRemaining = phases[0].seconds;
+    currentPhaseIndex = getNextValidPhaseIndex(0);
+    phaseRemaining = phases[currentPhaseIndex].seconds;
+  }
+
+  function getNextValidPhaseIndex(startIndex) {
+    for (let index = startIndex; index < phases.length; index += 1) {
+      if (phases[index].seconds > 0) {
+        return index;
+      }
+    }
+
+    return null;
   }
 
   function subscribe(listener) {

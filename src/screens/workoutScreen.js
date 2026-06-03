@@ -76,6 +76,8 @@ export function renderWorkoutScreen(state) {
 }
 
 export function bindWorkoutScreen(state) {
+  let lastPhaseId = null;
+let lastStatus = null;
   const session = state.activeSession;
 
   if (unsubscribe) {
@@ -91,20 +93,25 @@ export function bindWorkoutScreen(state) {
   const startButton = document.querySelector("#start-session-button");
   const resetButton = document.querySelector("#reset-session-button");
 
-  startButton?.addEventListener("click", () => {
+    startButton?.addEventListener("click", async () => {
+    await unlockAudio();
+
     const snapshot = tempoEngine.getSnapshot();
 
     if (snapshot.status === "idle") {
+      playStartCue();
       tempoEngine.start();
       return;
     }
 
     if (snapshot.status === "running") {
+      playPauseCue();
       tempoEngine.pause();
       return;
     }
 
     if (snapshot.status === "paused") {
+      playStartCue();
       tempoEngine.resume();
       return;
     }
@@ -118,8 +125,25 @@ export function bindWorkoutScreen(state) {
     tempoEngine.reset();
   });
 
-  unsubscribe = tempoEngine.subscribe((snapshot) => {
+    unsubscribe = tempoEngine.subscribe((snapshot) => {
     updateWorkoutUI(snapshot, state);
+
+    if (
+      snapshot.status === "running" &&
+      snapshot.phase.id !== lastPhaseId
+    ) {
+      playPhaseTick(snapshot.phase.id);
+    }
+
+    if (
+      snapshot.status === "complete" &&
+      lastStatus !== "complete"
+    ) {
+      playCompleteCue();
+    }
+
+    lastPhaseId = snapshot.phase.id;
+    lastStatus = snapshot.status;
   });
 }
 

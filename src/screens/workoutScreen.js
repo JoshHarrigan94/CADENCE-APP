@@ -6,6 +6,10 @@ import {
   playCompleteCue,
   playPhaseTick,
 } from "../engine/audioEngine.js";
+import {
+  saveState,
+  createSessionRecord,
+} from "../data/storage.js";
 let tempoEngine = null;
 let unsubscribe = null;
 
@@ -60,9 +64,9 @@ export function renderWorkoutScreen(state) {
           Reset
         </button>
 
-        <button class="secondary-button" data-route="summary">
-          End
-        </button>
+        <button class="secondary-button" id="end-session-button">
+  End
+</button>
       </section>
 
       <nav class="bottom-nav">
@@ -92,7 +96,7 @@ let lastStatus = null;
 
   const startButton = document.querySelector("#start-session-button");
   const resetButton = document.querySelector("#reset-session-button");
-
+    const endButton = document.querySelector("#end-session-button");
     startButton?.addEventListener("click", async () => {
     await unlockAudio();
 
@@ -144,6 +148,26 @@ let lastStatus = null;
 
     lastPhaseId = snapshot.phase.id;
     lastStatus = snapshot.status;
+  });
+  
+    endButton?.addEventListener("click", () => {
+    const snapshot = tempoEngine.getSnapshot();
+
+    state.activeSession.status = snapshot.status;
+    state.activeSession.completedReps = snapshot.completedReps;
+
+    const record = createSessionRecord(state.activeSession);
+
+    state.history.unshift(record);
+    state.lastSession = record;
+
+    saveState(state);
+
+    window.dispatchEvent(
+      new CustomEvent("cadence:navigate", {
+        detail: "summary",
+      })
+    );
   });
 }
 

@@ -15,6 +15,7 @@ import {
 import {
   renderWorkoutScreen,
   bindWorkoutScreen,
+  cleanupWorkoutScreen,
 } from "./screens/workoutScreen.js";
 
 import {

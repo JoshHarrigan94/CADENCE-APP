@@ -1,4 +1,4 @@
-..app-shell {
+.app-shell {
   width: min(100%, 520px);
   min-height: 100vh;
   margin: 0 auto;

@@ -151,24 +151,46 @@ let lastStatus = null;
   });
   
     endButton?.addEventListener("click", () => {
-    const snapshot = tempoEngine.getSnapshot();
+  const snapshot = tempoEngine.getSnapshot();
 
-    state.activeSession.status = snapshot.status;
-    state.activeSession.completedReps = snapshot.completedReps;
+  const hasStarted =
+    snapshot.status !== "idle" ||
+    snapshot.completedReps > 0;
 
-    const record = createSessionRecord(state.activeSession);
-
-    state.history.unshift(record);
-    state.lastSession = record;
-
-    saveState(state);
-
+  if (!hasStarted) {
     window.dispatchEvent(
       new CustomEvent("cadence:navigate", {
-        detail: "summary",
+        detail: "home",
       })
     );
-  });
+
+    return;
+  }
+
+  state.activeSession.status = snapshot.status;
+  state.activeSession.completedReps = snapshot.completedReps;
+
+  const record = createSessionRecord(state.activeSession);
+
+  const alreadySaved =
+    state.lastSession &&
+    state.lastSession.exercise === record.exercise &&
+    state.lastSession.completedReps === record.completedReps &&
+    state.lastSession.targetReps === record.targetReps &&
+    state.lastSession.tempo.join("-") === record.tempo.join("-");
+
+  if (!alreadySaved) {
+    state.history.unshift(record);
+    state.lastSession = record;
+    saveState(state);
+  }
+
+  window.dispatchEvent(
+    new CustomEvent("cadence:navigate", {
+      detail: "summary",
+    })
+  );
+});
 }
 
 function updateWorkoutUI(snapshot, state) {

@@ -21,6 +21,7 @@ export const state = {
     targetReps: 8,
     completedReps: 0,
   },
+    lastSession: null,
 
   history: [],
 };

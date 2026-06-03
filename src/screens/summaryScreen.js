@@ -1,13 +1,20 @@
 export function renderSummaryScreen(state) {
+  const session = state.lastSession || state.activeSession;
+
+  const completion =
+    session.targetReps > 0
+      ? Math.round((session.completedReps / session.targetReps) * 100)
+      : 0;
+
   return `
     <main class="screen">
 
       <section class="page-header">
         <p class="eyebrow">Summary</p>
-        <h1>Session complete.</h1>
+        <h1>Session logged.</h1>
         <p>
-          Later this will show rep quality, completion, tempo accuracy,
-          and progression guidance.
+          Cadence has saved the work. Review the signal, then return
+          to training.
         </p>
       </section>
 
@@ -15,23 +22,32 @@ export function renderSummaryScreen(state) {
 
         <article class="status-card">
           <span>Exercise</span>
-          <strong>${state.activeSession.exercise}</strong>
+          <strong>${session.exercise}</strong>
         </article>
 
         <article class="status-card">
-          <span>Target</span>
-          <strong>${state.activeSession.targetReps} reps</strong>
+          <span>Completion</span>
+          <strong>${completion}%</strong>
+        </article>
+
+        <article class="status-card">
+          <span>Reps</span>
+          <strong>${session.completedReps}/${session.targetReps}</strong>
         </article>
 
         <article class="status-card">
           <span>Tempo</span>
-          <strong>${state.activeSession.tempo.join("-")}</strong>
+          <strong>${session.tempo.join("-")}</strong>
         </article>
 
       </section>
 
-      <button class="primary-button" data-route="home">
-        Return Home
+      <button class="primary-button" data-route="workout">
+        Train Again
+      </button>
+
+      <button class="secondary-button" data-route="history">
+        View History
       </button>
 
     </main>

@@ -3,7 +3,10 @@ import { state } from "./state.js";
 import { renderHomeScreen } from "./screens/homeScreen.js";
 import { renderAssessmentScreen } from "./screens/assessmentScreen.js";
 import { renderPlanScreen } from "./screens/planScreen.js";
-import { renderWorkoutScreen } from "./screens/workoutScreen.js";
+import {
+  renderWorkoutScreen,
+  bindWorkoutScreen,
+} from "./screens/workoutScreen.js";
 import { renderSummaryScreen } from "./screens/summaryScreen.js";
 import { renderHistoryScreen } from "./screens/historyScreen.js";
 
@@ -35,6 +38,10 @@ export function renderApp() {
 
   app.innerHTML = screenRenderer(state);
   bindNavigation();
+
+  if (state.currentScreen === "workout") {
+    bindWorkoutScreen(state);
+  }
 }
 
 function bindNavigation() {

@@ -316,3 +316,19 @@ p {
 .loading {
   color: var(--ink-muted);
 }
+
+.tempo-dial {
+  background:
+    radial-gradient(circle, rgba(247,242,232,0.95) 0 38%, transparent 39%),
+    conic-gradient(
+      var(--ink) var(--phase-progress, 0deg),
+      rgba(16, 16, 14, 0.08) 0deg
+    ),
+    repeating-radial-gradient(
+      circle,
+      rgba(16, 16, 14, 0.055) 0,
+      rgba(16, 16, 14, 0.055) 1px,
+      transparent 1px,
+      transparent 13px
+    );
+}

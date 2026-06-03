@@ -2,30 +2,30 @@ export function createTempoEngine(config = {}) {
   const tempo = config.tempo || [3, 1, 1, 1];
   const targetReps = config.targetReps || 8;
 
-  const phases = [
+    const phases = [
     {
       id: "eccentric",
       label: "Lower",
       seconds: tempo[0],
-      cue: "Control the descent.",
+      cue: "Slow descent. Ribs down. Elbows track clean.",
     },
     {
       id: "bottom",
       label: "Hold",
       seconds: tempo[1],
-      cue: "Stay tight at the bottom.",
+      cue: "Chest close. Brace. No collapse.",
     },
     {
       id: "concentric",
       label: "Drive",
       seconds: tempo[2],
-      cue: "Press with intent.",
+      cue: "Press the floor away. Move as one piece.",
     },
     {
       id: "top",
       label: "Lock",
       seconds: tempo[3],
-      cue: "Own the top position.",
+      cue: "Own the top. Scapula controlled. Breathe.",
     },
   ];
 

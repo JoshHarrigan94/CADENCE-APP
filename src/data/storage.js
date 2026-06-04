@@ -12,11 +12,16 @@ export function loadSavedState() {
 
 export function saveState(state) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      assessment: state.assessment,
-      activePlan: state.activePlan,
-      history: state.history,
-    }));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        assessment: state.assessment,
+        activePlan: state.activePlan,
+        activeSession: state.activeSession,
+        lastSession: state.lastSession,
+        history: state.history,
+      })
+    );
   } catch {
     console.warn("Cadence could not save state.");
   }

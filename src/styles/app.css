@@ -1002,3 +1002,94 @@ p {
   min-height: 3.65rem;
   border-radius: 0;
 }
+
+/* =========================
+   CADENCE HOME SCREEN
+   ========================= */
+
+.home-screen {
+  justify-content: flex-start;
+}
+
+.home-hero {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.home-hero h1 {
+  max-width: 6ch;
+  margin-bottom: 1rem;
+  font-size: clamp(4rem, 18vw, 7rem);
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.14em;
+}
+
+.home-hero span {
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.8;
+}
+
+.home-command-panel {
+  display: grid;
+  border-top: 1px solid rgba(16, 16, 14, 0.22);
+}
+
+.command-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  min-height: 3.6rem;
+  border-bottom: 1px solid rgba(16, 16, 14, 0.12);
+}
+
+.command-row span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-muted);
+}
+
+.command-row strong {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.home-actions {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.home-actions .primary-button,
+.home-actions .secondary-button {
+  min-height: 3.6rem;
+  border-radius: 0;
+}
+
+.home-strip {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(16, 16, 14, 0.28);
+
+  display: flex;
+  justify-content: space-between;
+
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.home-screen .page-dots {
+  padding-bottom: 0.5rem;
+}

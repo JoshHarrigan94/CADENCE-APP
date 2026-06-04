@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (saved) {
     state.assessment = saved.assessment || state.assessment;
     state.activePlan = saved.activePlan || state.activePlan;
+    state.activeSession = saved.activeSession || state.activeSession;
+    state.lastSession = saved.lastSession || state.lastSession;
     state.history = saved.history || [];
   }
 

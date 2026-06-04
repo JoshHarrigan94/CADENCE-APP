@@ -23,12 +23,13 @@ export function renderWorkoutScreen(state) {
   return `
     <main class="screen workout-screen">
 
-      <section class="workout-header">
-        <p class="eyebrow">Active Session</p>
-        <h1>${session.exercise}</h1>
-      </section>
+      <header class="cadence-topbar">
+        <span class="topbar-time">06:24</span>
+        <strong>CADENCE</strong>
+        <button class="topbar-menu" data-route="home">☰</button>
+      </header>
 
-      <section class="tempo-instrument">
+      <section class="instrument-stage">
 
         <div class="tempo-dial" id="tempo-dial">
           <div class="dial-needle" id="dial-needle"></div>
@@ -36,17 +37,24 @@ export function renderWorkoutScreen(state) {
           <div class="dial-core">
             <span class="dial-label" id="phase-mini-label">Tempo</span>
             <strong id="tempo-count">${session.tempo.join("-")}</strong>
-            <small id="rep-mini-label">Rep 1</small>
+            <small>Seconds</small>
           </div>
         </div>
 
-        <div class="rep-counter">
-          <span>Reps completed</span>
-          <strong id="rep-count">0/${session.targetReps}</strong>
+      </section>
 
-          <div class="rep-progress-track">
-            <div class="rep-progress-fill" id="rep-progress-fill"></div>
-          </div>
+      <section class="session-readout">
+
+        <div class="readout-cell">
+          <span>Rep</span>
+          <strong id="rep-count">0/${session.targetReps}</strong>
+        </div>
+
+        <div class="readout-pulse">⌁</div>
+
+        <div class="readout-cell">
+          <span>Set</span>
+          <strong>01</strong>
         </div>
 
       </section>
@@ -57,6 +65,15 @@ export function renderWorkoutScreen(state) {
         <p id="phase-cue">
           Hands planted. Body braced. One clean line.
         </p>
+
+        <div class="rep-progress-track">
+          <div class="rep-progress-fill" id="rep-progress-fill"></div>
+        </div>
+      </section>
+
+      <section class="session-strip">
+        <span>Tempo ${session.tempo.join("-")}</span>
+        <span>Rest 90s</span>
       </section>
 
       <section class="session-actions">
@@ -69,15 +86,17 @@ export function renderWorkoutScreen(state) {
         </button>
 
         <button class="secondary-button" id="end-session-button">
-  End
-</button>
+          End
+        </button>
       </section>
 
-      <nav class="bottom-nav">
-        <button data-route="home">Home</button>
-        <button data-route="plan">Plan</button>
-        <button data-route="history">History</button>
-      </nav>
+      <div class="page-dots">
+        <span class="is-active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
     </main>
   `;

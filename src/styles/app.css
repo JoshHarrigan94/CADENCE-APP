@@ -383,13 +383,14 @@ p {
 }
 
 .rep-counter {
-  padding: 1.15rem;
+  padding: 0.9rem 1rem;
 }
 
 .rep-counter strong {
   font-family: var(--font-mono);
-  font-size: 2.25rem;
-  letter-spacing: -0.08em;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
 }
 
 .rep-progress-track {
@@ -416,6 +417,7 @@ p {
     transform 260ms var(--ease-out),
     border-color 260ms var(--ease-out),
     background 260ms var(--ease-out);
+    text-align: center;
 }
 
 .phase-panel[data-status="running"] {
@@ -440,6 +442,18 @@ p {
 
 .phase-panel[data-status="complete"] {
   border-color: var(--success);
+}
+
+.phase-panel h2 {
+  margin-bottom: 0.4rem;
+  font-size: 2rem;
+  letter-spacing: -0.06em;
+}
+
+.phase-panel p {
+  max-width: 26ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bottom-nav {

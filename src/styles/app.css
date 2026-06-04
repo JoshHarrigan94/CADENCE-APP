@@ -295,18 +295,20 @@ p {
   background: var(--ink);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(0deg);
-  transition: transform 420ms var(--ease-out);
+  transition: none;
+  will-change: transform;
 }
 
 .dial-needle::after {
   content: "";
   position: absolute;
-  top: -0.22rem;
+  top: -0.24rem;
   left: 50%;
-  width: 0.55rem;
-  height: 0.55rem;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid var(--ink);
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--paper-warm);
   transform: translateX(-50%);
 }
 

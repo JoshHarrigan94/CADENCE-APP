@@ -13,6 +13,10 @@ import {
 let tempoEngine = null;
 let unsubscribe = null;
 
+let animationFrameId = null;
+let displayedProgress = 0;
+let targetProgress = 0;
+
 export function renderWorkoutScreen(state) {
   const session = state.activeSession;
 
@@ -250,19 +254,15 @@ function updateWorkoutUI(snapshot, state) {
     startButton.textContent = getStartButtonLabel(snapshot.status);
   }
 
-  if (tempoDial) {
+    if (tempoDial) {
     tempoDial.dataset.phase = snapshot.phase.id;
     tempoDial.dataset.status = snapshot.status;
 
-    tempoDial.style.setProperty(
-      "--phase-progress",
-      `${phaseDegrees}deg`
-    );
-  }
+    targetProgress = phaseDegrees;
 
-  if (dialNeedle) {
-    dialNeedle.style.transform =
-      `translateX(-50%) rotate(${phaseDegrees}deg)`;
+    if (!animationFrameId) {
+      animateDialProgress();
+    }
   }
 
   if (phasePanel) {
@@ -289,6 +289,37 @@ function updateWorkoutUI(snapshot, state) {
       snapshot.status === "complete"
         ? "Session done"
         : `Rep ${snapshot.currentRep}`;
+  }
+}
+
+function animateDialProgress() {
+  const tempoDial = document.querySelector("#tempo-dial");
+  const dialNeedle = document.querySelector("#dial-needle");
+
+  const difference = targetProgress - displayedProgress;
+
+  displayedProgress += difference * 0.14;
+
+  if (Math.abs(difference) < 0.4) {
+    displayedProgress = targetProgress;
+  }
+
+  if (tempoDial) {
+    tempoDial.style.setProperty(
+      "--phase-progress",
+      `${displayedProgress}deg`
+    );
+  }
+
+  if (dialNeedle) {
+    dialNeedle.style.transform =
+      `translateX(-50%) rotate(${displayedProgress}deg)`;
+  }
+
+  if (Math.abs(targetProgress - displayedProgress) > 0.4) {
+    animationFrameId = requestAnimationFrame(animateDialProgress);
+  } else {
+    animationFrameId = null;
   }
 }
 
@@ -341,5 +372,12 @@ export function cleanupWorkoutScreen() {
     unsubscribe = null;
   }
 
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+
   tempoEngine = null;
+  displayedProgress = 0;
+  targetProgress = 0;
 }

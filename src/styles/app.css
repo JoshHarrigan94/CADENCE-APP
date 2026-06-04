@@ -38,7 +38,7 @@
   background: var(--glass);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
   overflow: hidden;
 }
 
@@ -290,7 +290,7 @@ p {
   border: 1px solid var(--line);
   border-radius: var(--radius-full);
   background: var(--glass-strong);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 16px 50px rgba(16, 16, 14, 0.12);
   z-index: 20;
 }
